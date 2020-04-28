@@ -1,3 +1,6 @@
+require "dotenv"
+Dotenv.load if File.exists? ".env"
+
 require "kemal"
 
 require "base64"
@@ -10,23 +13,43 @@ require "./hubitat/*"
 require "./github/*"
 require "./manifest_cache"
 
-cache = ManifestCache.new
+cache = ManifestCache.new(cache: Kemal.config.env == "production")
 
-Log.builder.bind "*", :debug, Log::IOBackend.new 
+Log.builder.bind "*", :debug, Log::IOBackend.new
+
+Github::Config.instance.oauth_token = ENV["PERSONAL_ACCESS_TOKEN"]? || ""
+
+def github_redirect(path)
+  new_path = Path["/g"]
+  new_path /= path.gsub("/tree/master","")
+  new_path.to_s
+end
 
 get "/" do
   "hello world"
 end
 
-get "/gh/:user/:repo/*path" do |env|
+get "/g/:user/:repo/*path" do |env|
   github_slug = "#{env.params.url["user"]}/#{env.params.url["repo"]}"
-  path = env.params.url["path"]
+  path = URI.encode env.params.url["path"]
 
-  cache.get_or_set github_slug do
+  cache.get_or_set "#{github_slug}/#{path}" do
     Log.warn { "Cache miss for #{github_slug}" }
-    generator = PackageManifest.new github_slug
+    generator = PackageManifest.new github_slug, path
     generator.manifest
   end
+rescue e : Github::Error
+  halt env, status_code: 400, response: "Failed to query github api for details: #{env.params.url} - #{e.message}"
 end
 
-Kemal.run
+# get "/https://github.com/*path" do |env|
+#   env.redirect github_redirect env.params.url["path"]
+# end
+
+get "/https:/github.com/*path" do |env|
+  env.redirect github_redirect env.params.url["path"]
+end
+
+Kemal.run(
+  (ENV["PORT"]? || 3000).to_i
+)

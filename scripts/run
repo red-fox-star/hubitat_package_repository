@@ -1,3 +1,10 @@
 #!/bin/bash
 
-docker run -p 3000:3000 --rm -it hubitat_package_manifest "$@"
+set -euo pipefail
+#  -e KEMAL_ENV=development \
+
+docker run \
+  -p 3000:80 \
+  --env-file .env \
+  --rm -it \
+  hubitat_package_manifest "$@"

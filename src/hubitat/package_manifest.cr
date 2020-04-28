@@ -1,11 +1,22 @@
 class PackageManifest
-  def initialize(repository_slug : String)
+  @root : Array(Github::File)
+
+  def initialize(repository_slug : String, @relative_path = "")
     @repository = Github::Repository.new repository_slug
-    @relative_path = ""
+    @root = repository.content
+
+    navigate_to_root
   end
 
   property relative_path
   private property repository
+  private property root
+
+  def navigate_to_root
+    return if @relative_path == ""
+
+    @root = Github::Content.new(@repository, @relative_path).fetch
+  end
 
   def last_commit
     repository.commits.first
@@ -16,15 +27,13 @@ class PackageManifest
   end
 
   def files
-    files = repository.content
+    files = root
       .select {|file| file.name.ends_with?(".groovy") }
       .map {|file| Hubitat::File.from github: file }
   end
 
   def license_file
-    repository
-      .content
-      .select {|file| file.name == "LICENSE" }
+    root.select {|file| file.name == "LICENSE" }
       .first?
   end
 

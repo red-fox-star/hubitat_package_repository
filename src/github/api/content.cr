@@ -1,18 +1,21 @@
 module Github
   class Content < Base
-    def initialize(@repo : Repository, @path : String)
+    def initialize(@repo : Repository, @path = "")
       @entries = [] of File | Directory
     end
 
     def fetch
-      response = request api_domain / "repos" / @repo.slug / "contents"
+      path = api_domain / "repos" / @repo.slug / "contents"
+      path /= @path unless @path == ""
+
+      response = request path
 
       response.as_a.map do |entry|
         case entry["type"]
         when "file"
           Github::File.from_json entry
         when "dir"
-          Github::Directory.from_json entry
+          # Github::Directory.from_json entry
           nil
         else
           nil

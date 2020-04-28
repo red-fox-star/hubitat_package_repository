@@ -7,5 +7,6 @@ if [ "$#" -gt 0 ]; then
 # otherwise, start the server
 else
   redis-server &
+  scripts/wait-for-it.sh 127.0.0.1:6379
   exec bin/hubitat_package_manifest
 fi

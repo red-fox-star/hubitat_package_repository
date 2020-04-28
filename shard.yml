@@ -12,3 +12,7 @@ dependencies:
   redis:
     github: stefanwille/crystal-redis
     version: ~> 2.6.0
+
+  dotenv:
+    github: gdotdesign/cr-dotenv
+    version: ~> 0.7.0

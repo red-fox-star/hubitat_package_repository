@@ -1,5 +1,9 @@
 version: 1.0
 shards:
+  dotenv:
+    github: gdotdesign/cr-dotenv
+    version: 0.7.0
+
   exception_page:
     github: crystal-loot/exception_page
     version: 0.1.4

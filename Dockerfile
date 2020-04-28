@@ -1,16 +1,19 @@
 FROM crystallang/crystal:0.34.0-alpine
-WORKDIR /app
+RUN apk add --no-cache redis
 
-EXPOSE 3000
+ENV PORT 80
+ENV PERSONAL_ACCESS_TOKEN 00000000000000
+EXPOSE $PORT
+ENV KEMAL_ENV production
+
+WORKDIR /app
 
 COPY shard.yml shard.lock ./
 RUN shards
 
 COPY src ./src/
-RUN shards build
+RUN shards build --release
 
 COPY scripts ./scripts/
-
-RUN apk add --no-cache redis
 
 ENTRYPOINT ["./scripts/entrypoint"]

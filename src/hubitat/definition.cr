@@ -21,14 +21,18 @@ module Hubitat
       definition_block = file[open_parenthesis...close_parenthesis]
 
       # attempt to convert the definition block into a hash
-      definition_hash = definition_block
+      parsed_definitions = definition_block
         .gsub("\n","")
-        .split(",").map do |keyvalue|
+        .split(",")
+        .reject(&.blank?)
+        .map do |keyvalue|
           keyvalue
             .gsub("\"","")
             .split(':', 2)
             .map(&.strip)
-        end.to_h
+        end
+
+      definition_hash = parsed_definitions.to_h
 
       instance = new(
         name: definition_hash["name"],
