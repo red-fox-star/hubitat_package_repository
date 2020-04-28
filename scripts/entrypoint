@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# if a command was passed to this script, run it in the environment
+if [ "$#" -gt 0 ]; then
+  sh -c "$@"
+
+# otherwise, start the server
+else
+  redis-server &
+  exec bin/hubitat_package_manifest
+fi

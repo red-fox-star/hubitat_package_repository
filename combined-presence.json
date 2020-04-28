@@ -1,0 +1,34 @@
+{
+  "packageName": "Combined Presence",
+  "minimumHEVersion": "2.1.9",
+  "author": "Joel Wetzel",
+  "version": "2019.06.07",
+  "dateReleased": "2019-06-07",
+  "licenseFile": "https://raw.githubusercontent.com/joelwetzel/Hubitat-Combined-Presence/master/LICENSE",
+  "apps" : [
+    {
+      "id" : "F0733895-427E-4153-B8AC-29F086522C91",
+      "name": "Combined Presence",
+      "namespace": "joelwetzel",
+      "location": "https://raw.githubusercontent.com/joelwetzel/Hubitat-Combined-Presence/master/combinedPresence.groovy",
+      "required": true,
+      "oauth": false
+    },
+    {
+      "id" : "B22DA60E-A3F3-4F87-BF3F-9A47D40241E0",
+      "name": "Combined Presence Instance",
+      "namespace": "joelwetzel",
+      "location": "https://github.com/joelwetzel/Hubitat-Combined-Presence/raw/master/combinedPresenceInstance.groovy",
+      "required": true,
+      "oauth": false
+    },
+    {
+      "id" : "A197A7A2-DB16-4D66-9A24-3A2F7137A2E5",
+      "name": "Advanced Combined Presence Instance",
+      "namespace": "joelwetzel",
+      "location": "https://github.com/joelwetzel/Hubitat-Combined-Presence/raw/master/advancedCombinedPresenceInstance.groovy",
+      "required": false,
+      "oauth": false
+    }
+  ]
+}

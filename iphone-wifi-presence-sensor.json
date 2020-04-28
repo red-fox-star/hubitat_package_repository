@@ -1,0 +1,17 @@
+{
+  "packageName": "iPhone WiFi Presence Sensor",
+  "minimumHEVersion": "2.1.9",
+  "author": "Joel Wetzel",
+  "version": "2019.06.07",
+  "dateReleased": "2019-06-07",
+  "licenseFile": "https://github.com/joelwetzel/Hubitat-iPhone-Presence-Sensor/raw/master/LICENSE",
+  "drivers": [
+    {
+      "id": "9701ED0D-7041-4E77-976B-AE4807540326",
+      "name": "iPhone WiFi Presence Sensor",
+      "namespace": "joelwetzel",
+      "location": "https://github.com/joelwetzel/Hubitat-iPhone-Presence-Sensor/raw/master/iphoneWiFiPresenceSensor.groovy",
+      "required": true
+    }
+  ]
+}
