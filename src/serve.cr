@@ -2,6 +2,7 @@ require "dotenv"
 Dotenv.load if File.exists? ".env"
 
 require "kemal"
+require "markd"
 
 require "base64"
 require "digest"
@@ -25,8 +26,11 @@ def github_redirect(path)
   new_path.to_s
 end
 
+readme = File.read("readme.md")
+readme_html = Markd.to_html(readme)
+
 get "/" do
-  "hello world"
+  readme_html
 end
 
 get "/g/:user/:repo/*path" do |env|
@@ -42,13 +46,11 @@ rescue e : Github::Error
   halt env, status_code: 400, response: "Failed to query github api for details: #{env.params.url} - #{e.message}"
 end
 
-# get "/https://github.com/*path" do |env|
-#   env.redirect github_redirect env.params.url["path"]
-# end
-
 get "/https:/github.com/*path" do |env|
   env.redirect github_redirect env.params.url["path"]
 end
+
+serve_static false
 
 Kemal.run(
   (ENV["PORT"]? || 3000).to_i
