@@ -14,5 +14,6 @@ COPY src ./src/
 RUN shards build --release
 
 COPY scripts ./scripts/
+COPY readme.md .
 
 ENTRYPOINT ["./scripts/entrypoint"]
