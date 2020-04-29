@@ -37,11 +37,14 @@ get "/g/:user/:repo/*path" do |env|
   github_slug = "#{env.params.url["user"]}/#{env.params.url["repo"]}"
   path = URI.encode env.params.url["path"]
 
+  env.response.content_type = "application/json"
+
   cache.get_or_set "#{github_slug}/#{path}" do
     Log.warn { "Cache miss for #{github_slug}" }
     generator = PackageManifest.new github_slug, path
     generator.manifest
   end
+
 rescue e : Github::Error
   halt env, status_code: 400, response: "Failed to query github api for details: #{env.params.url} - #{e.message}"
 end
