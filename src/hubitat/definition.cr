@@ -40,8 +40,8 @@ module Hubitat
         author: definition_hash["author"]
       )
 
-      manifest = file.index "manifest"
-      instance.driver! if manifest && manifest < start_of_definition
+      metadata = file.index "metadata"
+      instance.driver! if metadata && metadata < start_of_definition
 
       instance
 
