@@ -40,7 +40,14 @@ class PackageManifest
   def manifest
     JSON.build do |j|
       j.object do
-        j.field "packageName", repository.name
+        package_name = [repository.author, repository.name]
+
+        if ! relative_path.blank?
+          package_name << relative_path.gsub('/','-')
+        end
+
+        j.field "packageName", package_name.join('/')
+
         j.field "minimumHEVersion", "2.1.9"
         j.field "author", repository.author
         j.field "version", version
