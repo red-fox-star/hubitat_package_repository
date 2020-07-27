@@ -61,7 +61,7 @@ class PackageManifest
           j.array do
             files.select(&.app?).each do |app|
               j.object do
-                j.field "id", Digest::SHA1.hexdigest(app.name).to_s
+                j.field "id", Digest::SHA1.base64digest(app.name)
                 j.field "name", app.name
                 j.field "namespace", app.namespace
                 j.field "location", app.url
@@ -76,7 +76,7 @@ class PackageManifest
           j.array do
             files.select(&.driver?).each do |driver|
               j.object do
-                j.field "id", Digest::SHA1.digest(driver.name).to_s
+                j.field "id", Digest::SHA1.base64digest(driver.name)
                 j.field "name", driver.name
                 j.field "namespace", driver.namespace
                 j.field "location", driver.url
