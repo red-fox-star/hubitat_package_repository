@@ -8,6 +8,7 @@ targets:
 dependencies:
   kemal:
     github: kemalcr/kemal
+    commit: dfe7dca08f4c9a9456d6132af5f6b59fcd6865e4
 
   redis:
     github: stefanwille/crystal-redis
